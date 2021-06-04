@@ -13,7 +13,7 @@ app.use(logger("dev"));
 
 mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { useNewUrlParser: true });
 
-require("./routes/api-routes")(app);
+require("./routes/api-routes.js")(app);
 require("./routes/html-routes")(app);
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
