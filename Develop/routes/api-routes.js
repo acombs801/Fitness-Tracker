@@ -1,31 +1,37 @@
-const db = require("../models");
+const Workout = require("../models/workout");
 
 module.exports = function (app) {
-
-    //GET route for getting workouts
-    app.get("/api/workouts", function (req, res) {
-        db.Workout.find({}).then(function (dbWorkout) {
-            res.json(dbWorkout);
-        }).catch(err => {
-            res.json(err);
-        })
-    })
-
-    //GET route for a specific workout
-    app.get("/api/workouts/range", (req, res) => {
-        db.Workout.find({}).then(function (dbWorkout) {
-            res.json(dbWorkout);
-        }).catch(err => {
-            res.json(err);
+        // Get all workouts
+        app.get("/api/workouts", function (req, res) {
+            Workout.find()
+            .then(function(data) {
+                console.log(data);
+                res.json(data);
+            });
         });
-    })
-
-    //GET route for a specific workout by ID
-    app.get("/api/workouts/:id", function (req, res) {
-        var id = req.params.id;
-        db.Workout.findById(id, function (err, dbWorkout) {
-        }).catch(err => {
-            res.json(err);
+    
+        // Add a new workout
+        app.post("/api/workouts", function (req, res) {
+            console.log(req.body);
+    
+            Workout.create({})
+            .then(function(data) {
+                res.json(data);
+            });
         });
-    })
-}
+    
+        app.put("/api/workouts/:id", function (req, res) {
+            Workout.findByIdAndUpdate(req.params.id, {$push: {exercises: req.body}})
+            .then(function(data) {
+                res.json(data);
+            });
+        });
+    
+        // Get workout in a specific range
+        app.get("/api/workouts/range", function (req, res) {
+            Workout.find()
+            .then(function(data) {
+                res.json(data)
+            });
+        });
+    }
